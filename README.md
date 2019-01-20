@@ -6,7 +6,4 @@
 
 - syntax highlight
 - indent
-
-## Todo
-
-- add omni complete ([luacomplete](https://github.com/SpaceVim/vim-luacomplete))
+- omni complete
