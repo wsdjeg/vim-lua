@@ -6,8 +6,8 @@ else
 endif
 
 
-function! lua#complete(findstart, bash)
+function! lua#complete(findstart, base) abort
 
-    
+ return lua#omni#complete(a:findstart, a:base)   
 
 endfunction
