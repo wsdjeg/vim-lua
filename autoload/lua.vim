@@ -1,8 +1,6 @@
 " source Lua...
 if has('lua')
-    exe 'luafile ' . fnamemodify(expand('<sfile>'), ':h:h').'/lib/luavi/luacomplete.lua'
-else
-    finish
+    exe 'luafile ' . fnamemodify(expand('<sfile>'), ':h:h').'/lua/luavi/complete.lua'
 endif
 
 
