@@ -1,8 +1,8 @@
 " source Lua...
-if has('nvim')
-    exe 'luafile ' . fnamemodify(expand('<sfile>'), ':h:h').'/lib/luavi/luacomplete_nvim.lua'
-else
+if has('lua')
     exe 'luafile ' . fnamemodify(expand('<sfile>'), ':h:h').'/lib/luavi/luacomplete.lua'
+else
+    finish
 endif
 
 

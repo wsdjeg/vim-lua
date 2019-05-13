@@ -1,5 +1,7 @@
 local PATTERN_LUA_IDENTIFIER = '([%a_]+[%a%d_.]*)'
 
+local vimutil = require("luavi.vimutils")
+
 
 local __p_counter = 0
 --- Writes given arguments to temporary file adding counting and "\n" when appropriate. Useful when debugging.
