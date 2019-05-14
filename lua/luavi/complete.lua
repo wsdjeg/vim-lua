@@ -1,6 +1,21 @@
+local PATTERN_LUA_IDENTIFIER = '([%a_]+[%a%d_.]*)'
+
 complete = {}
 
 local vimutil = require('luavi.vimutils')
+
+local function merge_list(...)
+  local res = {}
+  for idx = 1, select("#", ...) do
+    local t = select(idx, ...)
+    if type(t) == "table" then
+      for i, v in ipairs(t) do table.insert(res, v) end
+    else
+      table.insert(res, t)
+    end
+  end
+  return res
+end
 
 local function find_assigments(buf, line)
   if not line then

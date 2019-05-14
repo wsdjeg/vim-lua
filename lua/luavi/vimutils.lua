@@ -19,8 +19,7 @@ end
 
 
 function vimutils.current_buffer()
-    -- return vim.api.nvim_get_current_buf()
-    -- return buffer userdata
+    return vim.api.nvim_buf_get_lines(vim.api.nvim_get_current_buf(), 0, -1, 0)
 end
 
 function vimutils.current_linenr()
