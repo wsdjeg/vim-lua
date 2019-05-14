@@ -2,6 +2,61 @@ complete = {}
 
 local vimutil = require('luavi.vimutils')
 
+local function find_assigments(buf, line)
+  if not line then
+    buf = vimutils.current_buffer()
+    -- line = current line number
+    line = vimutils.current_linenr()
+  end
+  buf = buf or vimutils.current_buffer()
+  -- scan from first line
+  local set = {}
+  local list = {}
+  local absidx
+
+  local function add_multi_names(str)
+    string.gsub(str, '([^, ]+)', function(s)
+      if not set[s] or (set[s] > absidx) then
+        set[s] = absidx
+        table.insert(list, s)
+      end
+    end)
+  end
+
+  for lineidx = 1, #buf do
+    local sts = string.match(buf[lineidx], PATTERN_LUA_IDENTIFIER .. '%s*=[^=]?.*$')
+    -- collect assignments with relative line numbers
+    absidx = math.abs(line - lineidx)
+    if sts and (not set[sts] or (set[sts] > absidx)) then
+      -- set new key or replace but only if the new absolute index is smaller
+      set[sts] = absidx
+      table.insert(list, sts)
+    end
+    -- Check for variables defined without assignments as local. It may
+    -- generate redundant match but conditions in gsub's argument functions
+    -- will make it get correct results.
+    sts = string.match(buf[lineidx], 'local%s+([^=]+)')
+    if sts then add_multi_names(sts) end
+    -- matching variables initialized in generic for loop
+    sts = string.match(buf[lineidx], 'for%s+(.*)%s+in')
+    if sts then add_multi_names(sts) end
+    -- function names matching
+    sts = string.match(buf[lineidx], 'function%s+(' .. PATTERN_LUA_IDENTIFIER .. ')%s*%(')
+    if sts and (not set[sts] or (set[sts] > absidx)) then
+      -- set new key or replace but only if the new absolute index is smaller
+      set[sts] = absidx
+      table.insert(list, sts)
+    end
+    -- check for variables defined in functions statements
+    sts = string.match(buf[lineidx], 'function%s*[^(]*%(([^)]+)%)')
+    if sts then add_multi_names(sts) end
+  end
+  -- sort list using set's absolute indexes in comparator
+  table.sort(list, function(v1, v2) return set[v1] < set[v2] end)
+  return list
+end
+
+
 local function lua_omni_files()
   local list = {}
   -- first check LUA_OMNI shell variable
