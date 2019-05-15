@@ -1,5 +1,5 @@
 function! lua#fold#foldlevel(linenum) abort
-    lua foldlevel_luacode()
+    lua require('luavi').fold(require('luavi.vimutils').eval('a:linenum'))
 endfunction
 
 
