@@ -39,10 +39,16 @@ function vimutils.get_current_line()
     end
 end
 
+local function _index_buffer(buf, line)
+    return vim.api.nvim_buf_get_lines(buf._bufnr, 0, -1, 0)[line]
+end
 
 function vimutils.current_buffer()
     if is_nvim then
-        return vim.api.nvim_buf_get_lines(vim.api.nvim_get_current_buf(), 0, -1, 0)
+        local buffer = {}
+        buffer._bufnr = vim.api.nvim_get_current_buf()
+        buffer = setmetatable(buffer, { __index =  _index_buffer })
+        return buffer
     else
         return vim.window().buffer
     end
