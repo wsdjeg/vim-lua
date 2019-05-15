@@ -18,6 +18,13 @@ if !has('lua') && !has('nvim')
     finish
 endif
 
+if !has('nvim') && has('lua')
+    " add lua path
+    let s:plugin_dir = fnamemodify(expand('<sfile>'), ':h:h').'\lua'
+    let s:str = s:plugin_dir . '\?.lua;' . s:plugin_dir . '\?\init.lua;'
+    lua package.path=vim.eval("s:str") .. package.path
+endif
+
 " save and reset compatibility options
 let s:save_cpo = &cpo
 set cpo&vim
