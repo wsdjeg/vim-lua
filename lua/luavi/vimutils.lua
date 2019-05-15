@@ -2,9 +2,9 @@ vimutils = {}
 
 vimutils.constant = "hello"
 
-function table.has_key(table, key)
-    for key, value in pairs(table) do
-        if key == key then
+function table.has_key(test_table, test_key)
+    for key, value in pairs(test_table) do
+        if key == test_key then
             return true
         end
     end
