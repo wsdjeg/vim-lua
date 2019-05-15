@@ -88,7 +88,8 @@ end
 
 local function completion_findstart()
     local line = vimutil.get_current_line()
-    for i = w.col - 1, 1, -1 do
+    local col = vimutils.eval('col(".")')
+    for i = col - 1, 1, -1 do
         local c = string.sub(line, i, i)
         -- "*" and "?" may be used by glob pattern
         if string.find(c, "[^a-zA-Z0-9_%.*?]") then
