@@ -6,15 +6,9 @@
 
 " check if Vim is in correct version and has Lua support
 if v:version < 703
-    echohl WarningMsg
-    echom 'Only Vim version 7.3 (or newer) is supported!'
-    echohl NONE
     finish
 endif
 if !has('lua') && !has('nvim')
-    echohl WarningMsg
-    echom 'Lua support must be enabled!'
-    echohl NONE
     finish
 endif
 
